@@ -95,6 +95,14 @@ export default [
     },
   },
 
+  // Logger package — console usage is intentional
+  {
+    files: ['packages/logger/**/*.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+
   // Root config files (JS)
   {
     files: ['*.js', '*.mjs', '*.cjs', 'packages/eslint-config/*.js'],
