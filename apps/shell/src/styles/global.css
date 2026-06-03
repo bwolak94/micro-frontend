@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Skip navigation link for keyboard accessibility */
+.skip-link {
+  @apply fixed left-0 top-0 z-50 -translate-y-full transform bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-transform focus:translate-y-0;
+}

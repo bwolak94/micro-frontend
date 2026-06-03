@@ -1,0 +1,14 @@
+{
+  "extends": "@portfolio/tsconfig/vite-app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
+  },
+  "include": [
+    "src",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "tailwind.config.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}
