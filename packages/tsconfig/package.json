@@ -1,0 +1,10 @@
+{
+  "name": "@portfolio/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "base.json",
+    "vite-app.json",
+    "node.json"
+  ]
+}
