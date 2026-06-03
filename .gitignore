@@ -68,3 +68,4 @@ storybook-static/
 .cache/
 .claude/
 .snapshots/
+tasks/

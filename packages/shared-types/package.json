@@ -13,5 +13,10 @@
     "lint:fix": "eslint src --fix",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist .turbo"
+  },
+  "devDependencies": {
+    "@portfolio/tsconfig": "workspace:*",
+    "rimraf": "^6.0.0",
+    "typescript": "^5.4.0"
   }
 }
