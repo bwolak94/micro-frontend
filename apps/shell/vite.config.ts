@@ -17,6 +17,10 @@ export default defineConfig(({ mode }) => ({
           mode === 'production'
             ? '/mfe-dashboard/assets/remoteEntry.js'
             : 'http://localhost:3002/remoteEntry.js',
+        mfeProducts:
+          mode === 'production'
+            ? '/mfe-products/assets/remoteEntry.js'
+            : 'http://localhost:3003/remoteEntry.js',
       },
       shared: {
         react: { singleton: true, requiredVersion: '^18.3.0' },
