@@ -14,6 +14,10 @@ export default defineConfig({
         .pathname,
       'mfeAuth/RegisterPage': new URL('./src/test/mocks/mfeAuth-RegisterPage.tsx', import.meta.url)
         .pathname,
+      'mfeDashboard/DashboardPage': new URL(
+        './src/test/mocks/mfeDashboard-DashboardPage.tsx',
+        import.meta.url,
+      ).pathname,
     },
   },
 });

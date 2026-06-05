@@ -5,16 +5,9 @@ import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 import { useAuth } from '../hooks/useAuth';
 import AppShell from '../layout/AppShell/AppShell';
 import AuthRemote from '../remotes/AuthRemote';
+import DashboardRemote from '../remotes/DashboardRemote';
 
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
-
-// Placeholder pages for tasks not yet implemented
-const DashboardPlaceholder: FC = () => (
-  <div className="rounded-lg border border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-800">
-    <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Dashboard</h1>
-    <p className="mt-2 text-gray-500 dark:text-gray-400">Coming in Task 04</p>
-  </div>
-);
 
 const ProductsPlaceholder: FC = () => (
   <div className="rounded-lg border border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-800">
@@ -53,7 +46,7 @@ export const router = createBrowserRouter(
       ),
       children: [
         { index: true, element: <Navigate to="/dashboard" replace /> },
-        { path: 'dashboard', element: <DashboardPlaceholder /> },
+        { path: 'dashboard', element: <DashboardRemote.DashboardPage /> },
         { path: 'products', element: <ProductsPlaceholder /> },
       ],
     },
