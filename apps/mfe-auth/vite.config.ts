@@ -10,8 +10,8 @@ export default defineConfig({
       name: 'mfeAuth',
       filename: 'remoteEntry.js',
       exposes: {
-        './LoginPage': './src/LoginPage/index.tsx',
-        './RegisterPage': './src/RegisterPage/index.tsx',
+        './LoginPage': './src/LoginPage/LoginPage.tsx',
+        './RegisterPage': './src/RegisterPage/RegisterPage.tsx',
       },
       shared: {
         react: { singleton: true, requiredVersion: '^18.3.0' },
