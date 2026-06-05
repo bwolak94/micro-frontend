@@ -4,6 +4,8 @@ import importPlugin from 'eslint-plugin-import';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import vuePlugin from 'eslint-plugin-vue';
+import vueParser from 'vue-eslint-parser';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
@@ -83,6 +85,35 @@ export default [
       'jsx-a11y/interactive-supports-focus': 'error',
       'jsx-a11y/label-has-associated-control': 'error',
       'jsx-a11y/no-autofocus': 'warn',
+    },
+  },
+
+  // Vue SFC files (mfe-products)
+  {
+    files: ['apps/mfe-products/**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: tsParser,
+        extraFileExtensions: ['.vue'],
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      vue: vuePlugin,
+    },
+    rules: {
+      ...vuePlugin.configs['vue3-recommended'].rules,
+      'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+      'vue/define-macros-order': ['error', { order: ['defineProps', 'defineEmits'] }],
+      'vue/html-self-closing': [
+        'error',
+        { html: { void: 'always', normal: 'always', component: 'always' } },
+      ],
+      'vue/no-unused-vars': 'error',
+      'vue/padding-line-between-blocks': 'error',
+      'vue/script-setup-uses-vars': 'error',
     },
   },
 

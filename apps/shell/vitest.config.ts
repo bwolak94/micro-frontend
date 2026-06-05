@@ -18,6 +18,10 @@ export default defineConfig({
         './src/test/mocks/mfeDashboard-DashboardPage.tsx',
         import.meta.url,
       ).pathname,
+      'mfeProducts/ProductsApp': new URL(
+        './src/test/mocks/mfeProducts-ProductsApp.ts',
+        import.meta.url,
+      ).pathname,
     },
   },
 });
