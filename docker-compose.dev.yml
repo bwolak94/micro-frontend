@@ -1,0 +1,64 @@
+# Development override: only infrastructure containers.
+# MFEs and shell run locally with `pnpm dev`.
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up -d
+#   pnpm dev
+services:
+  bff:
+    build:
+      context: .
+      dockerfile: apps/bff/Dockerfile
+    ports:
+      - '4000:4000'
+    environment:
+      NODE_ENV: development
+      PORT: '4000'
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/mfe_portfolio
+      JWT_SECRET: dev-secret-32-chars-minimum-length
+      REDIS_URL: redis://redis:6379
+      CORS_ORIGINS: http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - backend
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mfe_portfolio
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d mfe_portfolio']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_dev_data:
+  redis_dev_data:
+
+networks:
+  backend:

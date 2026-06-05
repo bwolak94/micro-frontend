@@ -1,0 +1,146 @@
+services:
+  # ─── Reverse proxy ──────────────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    ports:
+      - '80:80'
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - shell
+      - mfe-auth
+      - mfe-dashboard
+      - mfe-products
+      - bff
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+  # ─── Frontend MFEs ──────────────────────────────────────────────────────────
+  shell:
+    build:
+      context: .
+      dockerfile: apps/shell/Dockerfile
+    networks:
+      - frontend
+    restart: unless-stopped
+
+  mfe-auth:
+    build:
+      context: .
+      dockerfile: apps/mfe-auth/Dockerfile
+    networks:
+      - frontend
+    restart: unless-stopped
+
+  mfe-dashboard:
+    build:
+      context: .
+      dockerfile: apps/mfe-dashboard/Dockerfile
+    networks:
+      - frontend
+    restart: unless-stopped
+
+  mfe-products:
+    build:
+      context: .
+      dockerfile: apps/mfe-products/Dockerfile
+    networks:
+      - frontend
+    restart: unless-stopped
+
+  # ─── BFF ────────────────────────────────────────────────────────────────────
+  bff:
+    build:
+      context: .
+      dockerfile: apps/bff/Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: '4000'
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/mfe_portfolio
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-min-32-chars!!}
+      REDIS_URL: redis://redis:6379
+      CORS_ORIGINS: http://localhost
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # ─── Data stores ────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mfe_portfolio
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d mfe_portfolio']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # ─── Observability (stubs — fully configured in Task 08) ────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - backend
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - backend
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki:latest
+    volumes:
+      - loki_data:/loki
+    networks:
+      - backend
+    restart: unless-stopped
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - /var/log:/var/log:ro
+      - ./docker/promtail/config.yml:/etc/promtail/config.yml:ro
+    networks:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+  loki_data:
+
+networks:
+  frontend:
+  backend:
