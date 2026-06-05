@@ -12,6 +12,37 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "clean": "rimraf dist .turbo"
+    "clean": "rimraf dist .turbo",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx src/domain/seed.ts",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^9.4.0",
+    "@fastify/cors": "^9.0.0",
+    "@fastify/jwt": "^8.0.0",
+    "@fastify/rate-limit": "^9.1.0",
+    "@fastify/swagger": "^8.15.0",
+    "@fastify/swagger-ui": "^3.0.0",
+    "@portfolio/shared-types": "workspace:*",
+    "bcryptjs": "^2.4.3",
+    "drizzle-orm": "^0.30.0",
+    "fastify": "^4.28.0",
+    "fastify-plugin": "^4.5.0",
+    "postgres": "^3.4.3",
+    "zod": "^3.22.0",
+    "zod-to-json-schema": "^3.23.0"
+  },
+  "devDependencies": {
+    "@portfolio/tsconfig": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.0.0",
+    "drizzle-kit": "^0.20.0",
+    "pino-pretty": "^11.0.0",
+    "rimraf": "^6.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0"
   }
 }
