@@ -1,22 +1,15 @@
-/// <reference types="vitest" />
 import federation from '@originjs/vite-plugin-federation';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: 'shell',
-      remotes: {
-        mfeAuth:
-          mode === 'production'
-            ? '/mfe-auth/assets/remoteEntry.js'
-            : 'http://localhost:3001/remoteEntry.js',
-        mfeDashboard:
-          mode === 'production'
-            ? '/mfe-dashboard/assets/remoteEntry.js'
-            : 'http://localhost:3002/remoteEntry.js',
+      name: 'mfeDashboard',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './DashboardPage': './src/DashboardPage/DashboardPage.tsx',
       },
       shared: {
         react: { singleton: true, requiredVersion: '^18.3.0' },
@@ -24,20 +17,27 @@ export default defineConfig(({ mode }) => ({
         'react-router-dom': { singleton: true, requiredVersion: '^6.22.0' },
         '@tanstack/react-query': { singleton: true, requiredVersion: '^5.0.0' },
         '@portfolio/shared-types': { singleton: true },
+        '@portfolio/event-bus': { singleton: true },
       },
     }),
   ],
   build: {
     target: 'esnext',
     minify: false,
+    cssCodeSplit: false,
   },
   server: {
-    port: 3000,
+    port: 3002,
+    cors: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
   },
-  test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
-    globals: true,
-    css: false,
+  preview: {
+    port: 3002,
+    cors: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
   },
-}));
+});
