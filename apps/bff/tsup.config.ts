@@ -25,6 +25,7 @@ export default defineConfig({
     'fastify',
     'fastify-plugin',
     'drizzle-orm',
+    'prom-client',
     'zod',
     'zod-to-json-schema',
   ],

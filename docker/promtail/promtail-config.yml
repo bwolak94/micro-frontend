@@ -1,0 +1,57 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # Scrape Docker container logs from the JSON log files
+  - job_name: docker-containers
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: docker
+          __path__: /var/lib/docker/containers/*/*-json.log
+
+    pipeline_stages:
+      # Parse the outer Docker JSON wrapper: log, stream, time
+      - json:
+          expressions:
+            output: log
+            stream: stream
+            time: time
+
+      # The "log" field contains the actual log line (may be JSON from pino)
+      - json:
+          source: output
+          expressions:
+            level: level
+            service: service
+            msg: msg
+            traceId: traceId
+            time: time
+
+      # Extract container name from the log file path for labelling
+      - regex:
+          source: filename
+          expression: '/var/lib/docker/containers/(?P<container_id>[^/]+)/[^/]+-json\.log'
+
+      # Set labels from extracted fields
+      - labels:
+          stream:
+          level:
+          service:
+
+      # Use the timestamp from the log line
+      - timestamp:
+          source: time
+          format: RFC3339Nano
+
+      # Use the parsed message as the log line
+      - output:
+          source: output

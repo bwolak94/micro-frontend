@@ -10,6 +10,7 @@ import { createUsersRepository } from './domain/repositories/users.repository';
 import { authPlugin } from './plugins/auth/auth.plugin';
 import { corsPlugin } from './plugins/cors';
 import { loggerPlugin } from './plugins/logger';
+import { metricsPlugin } from './plugins/metrics';
 import { rateLimitPlugin } from './plugins/rateLimit';
 import { authRoutes } from './routes/auth/auth.routes';
 import { dashboardRoutes } from './routes/dashboard/dashboard.routes';
@@ -50,6 +51,7 @@ async function build(): Promise<ReturnType<typeof Fastify>> {
   await app.register(corsPlugin, { config });
   await app.register(rateLimitPlugin);
   await app.register(authPlugin, { config });
+  await app.register(metricsPlugin);
 
   // Database + services
   const db = createDatabase(config.DATABASE_URL);
@@ -61,22 +63,9 @@ async function build(): Promise<ReturnType<typeof Fastify>> {
   const productsService = createProductsService(productsRepo);
   const dashboardService = createDashboardService(dashboardRepo);
 
-  // Health & metrics endpoints
+  // Health endpoint
   app.get('/health', async (_req, reply) => {
     return reply.send({ status: 'ok', uptime: process.uptime(), version: '1.0.0' });
-  });
-
-  app.get('/metrics', async (_req, reply) => {
-    const mem = process.memoryUsage();
-    const lines = [
-      `# HELP process_uptime_seconds Process uptime in seconds`,
-      `# TYPE process_uptime_seconds gauge`,
-      `process_uptime_seconds ${process.uptime().toFixed(2)}`,
-      `# HELP process_heap_bytes Node.js heap used bytes`,
-      `# TYPE process_heap_bytes gauge`,
-      `process_heap_bytes ${String(mem.heapUsed)}`,
-    ];
-    return reply.header('Content-Type', 'text/plain; charset=utf-8').send(lines.join('\n'));
   });
 
   // Routes
