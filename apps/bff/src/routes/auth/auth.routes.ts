@@ -19,7 +19,7 @@ export async function authRoutes(fastify: FastifyInstance, opts: AuthRoutesOpts)
         return reply
           .setCookie('token', token, {
             httpOnly: true,
-            secure: process.env['NODE_ENV'] === 'production',
+            secure: process.env['COOKIE_SECURE'] === 'true',
             sameSite: 'lax',
             path: '/',
           })
@@ -46,7 +46,7 @@ export async function authRoutes(fastify: FastifyInstance, opts: AuthRoutesOpts)
           .status(201)
           .setCookie('token', token, {
             httpOnly: true,
-            secure: process.env['NODE_ENV'] === 'production',
+            secure: process.env['COOKIE_SECURE'] === 'true',
             sameSite: 'lax',
             path: '/',
           })

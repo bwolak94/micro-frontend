@@ -7,6 +7,10 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(32).default('development-secret-key-must-be-at-least-32-chars'),
   REDIS_URL: z.string().optional(),
   CORS_ORIGINS: z.string().default('http://localhost:3000'),
+  COOKIE_SECURE: z
+    .string()
+    .transform((v) => v === 'true')
+    .default('false'),
 });
 
 export type Config = z.infer<typeof envSchema>;
