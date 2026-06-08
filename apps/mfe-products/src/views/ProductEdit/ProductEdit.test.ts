@@ -17,7 +17,7 @@ function createTestRouter() {
 }
 
 async function mountEdit(path = '/products/new') {
-  const router = createTestRouter(path);
+  const router = createTestRouter();
   await router.push(path);
   const wrapper = mount(ProductEdit, {
     global: { plugins: [router] },

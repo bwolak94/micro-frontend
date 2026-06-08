@@ -30,8 +30,13 @@ export async function productsRoutes(
       schema: { querystring: zodToJsonSchema(productsQuerySchema) },
     },
     async (req, reply) => {
-      const query = productsQuerySchema.parse(req.query);
-      const result = await productsService.getProducts(query);
+      const { page, pageSize, search, category } = productsQuerySchema.parse(req.query);
+      const result = await productsService.getProducts({
+        page,
+        pageSize,
+        ...(search !== undefined && { search }),
+        ...(category !== undefined && { category }),
+      });
       return reply.send(result);
     },
   );
@@ -60,7 +65,11 @@ export async function productsRoutes(
       schema: { body: zodToJsonSchema(createProductBodySchema) },
     },
     async (req, reply) => {
-      const product = await productsService.createProduct(req.body);
+      const { imageUrl, ...rest } = req.body;
+      const product = await productsService.createProduct({
+        ...rest,
+        ...(imageUrl !== undefined && { imageUrl }),
+      });
       return reply.status(201).send({ data: product });
     },
   );
@@ -75,7 +84,10 @@ export async function productsRoutes(
       },
     },
     async (req, reply) => {
-      const product = await productsService.updateProduct(req.params.id, req.body);
+      const updates = Object.fromEntries(
+        Object.entries(req.body).filter(([, v]) => v !== undefined),
+      ) as Parameters<typeof productsService.updateProduct>[1];
+      const product = await productsService.updateProduct(req.params.id, updates);
       if (product === null) {
         return reply
           .status(404)

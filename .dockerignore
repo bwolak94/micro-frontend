@@ -1,0 +1,14 @@
+**/node_modules
+**/dist
+**/.turbo
+**/coverage
+**/.env
+**/.env.local
+.git
+.gitignore
+*.md
+.husky
+.editorconfig
+.prettierrc
+.commitlintrc.js
+.eslintignore

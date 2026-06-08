@@ -7,7 +7,7 @@ import type {
   RegisterResponse,
 } from '@portfolio/shared-types';
 
-const BASE_URL = (import.meta.env['VITE_API_URL'] as string | undefined) ?? 'http://localhost:4000';
+const BASE_URL = (import.meta.env['VITE_API_URL'] as string | undefined) ?? '';
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {

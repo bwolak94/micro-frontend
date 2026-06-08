@@ -8,6 +8,8 @@ export interface JwtPayload {
   role: UserRole;
 }
 
+export type { FastifyReply, FastifyRequest };
+
 declare module '@fastify/jwt' {
   interface FastifyJWT {
     payload: JwtPayload;

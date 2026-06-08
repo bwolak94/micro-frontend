@@ -1,9 +1,9 @@
-import type { Product } from '@portfolio/shared-types';
+import type { Product, ProductCategory } from '@portfolio/shared-types';
 import type { Ref } from 'vue';
 
 export interface ProductsQueryParams {
   readonly search?: string;
-  readonly category?: string;
+  readonly category?: ProductCategory;
   readonly page?: number;
   readonly pageSize?: number;
 }
@@ -11,7 +11,7 @@ export interface ProductsQueryParams {
 export interface ProductFormData {
   readonly name: string;
   readonly description: string;
-  readonly category: string;
+  readonly category: ProductCategory;
   readonly price: number;
   readonly stock: number;
 }
