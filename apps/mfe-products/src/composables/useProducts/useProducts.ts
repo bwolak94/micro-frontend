@@ -65,7 +65,7 @@ export function useProductEdit(): UseProductEditReturn {
         const response = await productsClient.createProduct({
           name: data.name,
           description: data.description,
-          category: data.category as Product['category'],
+          category: data.category,
           price: data.price,
           stock: data.stock,
         });

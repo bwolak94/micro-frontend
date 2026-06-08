@@ -29,7 +29,7 @@ const RegisterRoute: FC = () => {
   );
 };
 
-export const router = createBrowserRouter(
+export const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
   [
     {
       path: '/',
@@ -50,7 +50,6 @@ export const router = createBrowserRouter(
   ],
   {
     future: {
-      v7_startTransition: true,
       v7_relativeSplatPath: true,
     },
   },

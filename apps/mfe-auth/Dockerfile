@@ -3,7 +3,7 @@ FROM node:20-alpine AS pruner
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 WORKDIR /app
 COPY . .
-RUN pnpm dlx turbo prune mfe-auth --docker
+RUN pnpm dlx turbo prune @portfolio/mfe-auth --docker
 
 # Stage 2: Install dependencies (separate layer for caching)
 FROM node:20-alpine AS deps
@@ -17,10 +17,9 @@ RUN pnpm install --frozen-lockfile
 FROM node:20-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages ./packages
+COPY --from=deps /app/ .
 COPY --from=pruner /app/out/full/ .
-RUN pnpm turbo run build --filter=mfe-auth
+RUN pnpm turbo run build --filter=@portfolio/mfe-auth
 
 # Stage 4: Serve with nginx
 FROM nginx:alpine AS runner

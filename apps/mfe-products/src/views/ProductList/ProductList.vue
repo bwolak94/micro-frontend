@@ -25,8 +25,8 @@ const totalPages = ref(0);
 
 async function load(): Promise<void> {
   await fetchProducts({
-    search: filters.value.search !== '' ? filters.value.search : undefined,
-    category: filters.value.category !== '' ? filters.value.category : undefined,
+    ...(filters.value.search !== '' && { search: filters.value.search }),
+    ...(filters.value.category !== '' && { category: filters.value.category }),
     page: pagination.value.page,
     pageSize: pagination.value.pageSize,
   });

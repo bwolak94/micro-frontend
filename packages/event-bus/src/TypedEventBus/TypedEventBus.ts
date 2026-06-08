@@ -4,7 +4,7 @@ import type { UnsubscribeFn } from './TypedEventBus.types';
  * Type-safe event bus backed by native EventTarget.
  * Generic over a map of event names to payload types.
  */
-export class TypedEventBus<TMap extends Record<string, unknown>> {
+export class TypedEventBus<TMap extends Record<keyof TMap, unknown>> {
   private readonly _target = new EventTarget();
 
   emit<K extends keyof TMap & string>(event: K, payload: TMap[K]): void {
