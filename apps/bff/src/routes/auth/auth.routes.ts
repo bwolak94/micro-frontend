@@ -1,5 +1,6 @@
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
+import { authLoginErrorsTotal, authLoginTotal } from '../../plugins/metrics';
 import { loginBodySchema, registerBodySchema } from '../../schemas/auth.schema';
 import { AuthError } from '../../services/auth/auth.service.types';
 
@@ -13,6 +14,7 @@ export async function authRoutes(fastify: FastifyInstance, opts: AuthRoutesOpts)
     '/api/auth/login',
     { schema: { body: zodToJsonSchema(loginBodySchema) } },
     async (req, reply) => {
+      authLoginTotal.inc();
       try {
         const user = await authService.verifyCredentials(req.body.email, req.body.password);
         const token = await reply.jwtSign({ sub: user.id, email: user.email, role: user.role });
@@ -26,6 +28,7 @@ export async function authRoutes(fastify: FastifyInstance, opts: AuthRoutesOpts)
           .send({ user });
       } catch (err) {
         if (err instanceof AuthError) {
+          authLoginErrorsTotal.inc();
           return reply
             .status(err.statusCode)
             .send({ statusCode: err.statusCode, message: err.message, error: 'Unauthorized' });

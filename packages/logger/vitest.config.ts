@@ -4,6 +4,11 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      thresholds: { lines: 70, functions: 70, branches: 70, statements: 70 },
+    },
   },
   define: {
     'import.meta.env.DEV': 'false',

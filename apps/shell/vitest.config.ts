@@ -8,6 +8,12 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     globals: true,
     css: false,
+    exclude: ['e2e/**', 'node_modules/**', 'dist/**'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      thresholds: { lines: 60, functions: 60, branches: 60, statements: 60 },
+    },
     alias: {
       // Mock Module Federation remote imports — remotes are not available in unit tests
       'mfeAuth/LoginPage': new URL('./src/test/mocks/mfeAuth-LoginPage.tsx', import.meta.url)

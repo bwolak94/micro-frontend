@@ -62,6 +62,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production-min-32-chars!!}
       REDIS_URL: redis://redis:6379
       CORS_ORIGINS: http://localhost
+      COOKIE_SECURE: 'false'
     depends_on:
       postgres:
         condition: service_healthy
@@ -97,39 +98,75 @@ services:
       - backend
     restart: unless-stopped
 
-  # ─── Observability (stubs — fully configured in Task 08) ────────────────────
-  prometheus:
-    image: prom/prometheus:latest
-    volumes:
-      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus_data:/prometheus
-    networks:
-      - backend
-    restart: unless-stopped
-
-  grafana:
-    image: grafana/grafana:latest
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: admin
-    volumes:
-      - grafana_data:/var/lib/grafana
-    networks:
-      - backend
-    restart: unless-stopped
-
+  # ─── Observability ──────────────────────────────────────────────────────────
   loki:
-    image: grafana/loki:latest
+    image: grafana/loki:3.0.0
+    command: -config.file=/etc/loki/loki-config.yml
     volumes:
+      - ./docker/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
       - loki_data:/loki
     networks:
       - backend
     restart: unless-stopped
 
   promtail:
-    image: grafana/promtail:latest
+    image: grafana/promtail:3.0.0
+    command: -config.file=/etc/promtail/promtail-config.yml
     volumes:
-      - /var/log:/var/log:ro
-      - ./docker/promtail/config.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./docker/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+    depends_on:
+      - loki
+    networks:
+      - backend
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    depends_on:
+      - bff
+    networks:
+      - backend
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    privileged: true
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    networks:
+      - backend
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    ports:
+      - '3100:3000'
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - loki
+      - prometheus
     networks:
       - backend
     restart: unless-stopped

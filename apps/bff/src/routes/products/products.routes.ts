@@ -1,5 +1,6 @@
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
+import { productUpdatesTotal } from '../../plugins/metrics';
 import {
   createProductBodySchema,
   productParamsSchema,
@@ -70,6 +71,7 @@ export async function productsRoutes(
         ...rest,
         ...(imageUrl !== undefined && { imageUrl }),
       });
+      productUpdatesTotal.inc();
       return reply.status(201).send({ data: product });
     },
   );
@@ -93,6 +95,7 @@ export async function productsRoutes(
           .status(404)
           .send({ statusCode: 404, message: 'Product not found', error: 'Not Found' });
       }
+      productUpdatesTotal.inc();
       return reply.send({ data: product });
     },
   );
@@ -110,6 +113,7 @@ export async function productsRoutes(
           .status(404)
           .send({ statusCode: 404, message: 'Product not found', error: 'Not Found' });
       }
+      productUpdatesTotal.inc();
       return reply.send({ message: 'Product deleted successfully' });
     },
   );
