@@ -26,6 +26,10 @@
       "cache": false,
       "persistent": true
     },
+    "test:e2e": {
+      "cache": false,
+      "env": ["E2E_BASE_URL"]
+    },
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },

@@ -116,6 +116,9 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.19
+      '@vitest/coverage-v8':
+        specifier: ^2.0.0
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.19)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3)))
       drizzle-kit:
         specifier: ^0.20.0
         version: 0.20.18
@@ -280,6 +283,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.7.0(vite@5.4.21(@types/node@25.9.1))
+      '@vitest/coverage-v8':
+        specifier: ^2.0.0
+        version: 2.1.9(vitest@2.1.9(@types/node@25.9.1)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3)))
       autoprefixer:
         specifier: ^10.4.0
         version: 10.5.0(postcss@8.5.15)
@@ -344,6 +350,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^5.0.0
         version: 5.2.4(vite@5.4.21(@types/node@25.9.1))(vue@3.5.35(typescript@5.9.3))
+      '@vitest/coverage-v8':
+        specifier: ^2.0.0
+        version: 2.1.9(vitest@2.1.9(@types/node@25.9.1)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3)))
       '@vue/test-utils':
         specifier: ^2.4.0
         version: 2.4.11(@vue/compiler-dom@3.5.35)(@vue/server-renderer@3.5.35(vue@3.5.35(typescript@5.9.3)))(vue@3.5.35(typescript@5.9.3))
@@ -408,9 +417,15 @@ importers:
         specifier: ^2.0.0
         version: 2.6.1
     devDependencies:
+      '@axe-core/playwright':
+        specifier: ^4.9.0
+        version: 4.11.3(playwright-core@1.60.0)
       '@originjs/vite-plugin-federation':
         specifier: ^1.3.0
         version: 1.4.1
+      '@playwright/test':
+        specifier: ^1.44.0
+        version: 1.60.0
       '@portfolio/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -472,6 +487,9 @@ importers:
       '@portfolio/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@vitest/coverage-v8':
+        specifier: ^2.0.0
+        version: 2.1.9(vitest@2.1.9(@types/node@25.9.1)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3)))
       rimraf:
         specifier: ^6.0.0
         version: 6.1.3
@@ -518,6 +536,9 @@ importers:
       '@portfolio/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@vitest/coverage-v8':
+        specifier: ^2.0.0
+        version: 2.1.9(vitest@2.1.9(@types/node@25.9.1)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3)))
       rimraf:
         specifier: ^6.0.0
         version: 6.1.3
@@ -533,6 +554,9 @@ importers:
       '@portfolio/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@vitest/coverage-v8':
+        specifier: ^2.0.0
+        version: 2.1.9(vitest@2.1.9(@types/node@25.9.1)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3)))
       rimraf:
         specifier: ^6.0.0
         version: 6.1.3
@@ -555,7 +579,45 @@ importers:
         specifier: ^5.4.0
         version: 5.9.3
 
-  packages/test-utils: {}
+  packages/test-utils:
+    dependencies:
+      '@portfolio/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+      '@tanstack/react-query':
+        specifier: ^5.0.0
+        version: 5.101.0(react@18.3.1)
+      msw:
+        specifier: ^2.3.0
+        version: 2.14.6(@types/node@25.9.1)(typescript@5.9.3)
+      react:
+        specifier: ^18.3.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.0
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.22.0
+        version: 6.30.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@portfolio/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@testing-library/react':
+        specifier: ^16.0.0
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.30))(@types/react@18.3.30)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react':
+        specifier: ^18.3.0
+        version: 18.3.30
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.7(@types/react@18.3.30)
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.1.3
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/tsconfig: {}
 
@@ -598,6 +660,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.2.0
         version: 4.7.0(vite@5.4.21(@types/node@25.9.1))
+      '@vitest/coverage-v8':
+        specifier: ^2.0.0
+        version: 2.1.9(vitest@2.1.9(@types/node@25.9.1)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3)))
       autoprefixer:
         specifier: ^10.4.0
         version: 10.5.0(postcss@8.5.15)
@@ -658,6 +723,14 @@ packages:
       {
         integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==,
       }
+
+  '@axe-core/playwright@4.11.3':
+    resolution:
+      {
+        integrity: sha512-h/kfksv4F0cVIDlKpT4700OehdRgpvuVskuQ2nb7/JmtWUXpe9ftHAPtwyXGvVSsa6SJ64A9ER7Zrzc/sIvC4w==,
+      }
+    peerDependencies:
+      playwright-core: '>= 1.0.0'
 
   '@babel/code-frame@7.29.7':
     resolution:
@@ -2482,6 +2555,14 @@ packages:
       }
     engines: { node: '>=14' }
 
+  '@playwright/test@1.60.0':
+    resolution:
+      {
+        integrity: sha512-O71yZIbAh/PxDMNGns37GHBIfrVkEVyn+AXyIa5dOTfb4/xNvRWV+Vv/NMbNCtODB/pO7vLlF2OTmMVLhmr7Ag==,
+      }
+    engines: { node: '>=18' }
+    hasBin: true
+
   '@remix-run/router@1.23.3':
     resolution:
       {
@@ -3943,6 +4024,13 @@ packages:
       {
         integrity: sha512-CDSwaxINFy59iNwhYnkvALBwZiTydGkOecZyPkqBpABYR1KqGEsET0VOOYDwtleZSUIdeY36DC2bSZ24CO1igA==,
       }
+
+  axe-core@4.11.4:
+    resolution:
+      {
+        integrity: sha512-KunSNx+TVpkAw/6ULfhnx+HWRecjqZGTOyquAoWHYLRSdK1tB5Ihce1ZW+UY3fj33bYAFWPu7W/GRSmmrCGuxA==,
+      }
+    engines: { node: '>=4' }
 
   axe-core@4.12.0:
     resolution:
@@ -5571,6 +5659,14 @@ packages:
       {
         integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==,
       }
+
+  fsevents@2.3.2:
+    resolution:
+      {
+        integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==,
+      }
+    engines: { node: ^8.16.0 || ^10.6.0 || >=11.0.0 }
+    os: [darwin]
 
   fsevents@2.3.3:
     resolution:
@@ -7340,6 +7436,22 @@ packages:
       {
         integrity: sha512-/Jm5M4RvtBFVkKWRu2BLUTNP8/M2a+UwuAX+ae4770q1qVGtfjG+WTCupoZixokjmHiry8uI+dlY8KXYV5HVVQ==,
       }
+
+  playwright-core@1.60.0:
+    resolution:
+      {
+        integrity: sha512-9bW6zvX/m0lEbgTKJ6YppOKx8H3VOPBMOCFh2irXFOT4BbHgrx5hPjwJYLT40Lu+4qtD36qKc/Hn56StUW57IA==,
+      }
+    engines: { node: '>=18' }
+    hasBin: true
+
+  playwright@1.60.0:
+    resolution:
+      {
+        integrity: sha512-hheHdokM8cdqCb0lcE3s+zT4t4W+vvjpGxsZlDnikarzx8tSzMebh3UiFtgqwFwnTnjYQcsyMF8ei2mCO/tpeA==,
+      }
+    engines: { node: '>=18' }
+    hasBin: true
 
   polished@4.3.1:
     resolution:
@@ -9133,6 +9245,11 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
 
+  '@axe-core/playwright@4.11.3(playwright-core@1.60.0)':
+    dependencies:
+      axe-core: 4.11.4
+      playwright-core: 1.60.0
+
   '@babel/code-frame@7.29.7':
     dependencies:
       '@babel/helper-validator-identifier': 7.29.7
@@ -10047,6 +10164,10 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
+  '@playwright/test@1.60.0':
+    dependencies:
+      playwright: 1.60.0
+
   '@remix-run/router@1.23.3': {}
 
   '@rolldown/pluginutils@1.0.0-beta.27': {}
@@ -10686,6 +10807,24 @@ snapshots:
       vite: 5.4.21(@types/node@25.9.1)
       vue: 3.5.35(typescript@5.9.3)
 
+  '@vitest/coverage-v8@2.1.9(vitest@2.1.9(@types/node@22.19.19)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3)))':
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@bcoe/v8-coverage': 0.2.3
+      debug: 4.4.3
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-lib-source-maps: 5.0.6
+      istanbul-reports: 3.2.0
+      magic-string: 0.30.21
+      magicast: 0.3.5
+      std-env: 3.10.0
+      test-exclude: 7.0.2
+      tinyrainbow: 1.2.0
+      vitest: 2.1.9(@types/node@22.19.19)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+    transitivePeerDependencies:
+      - supports-color
+
   '@vitest/coverage-v8@2.1.9(vitest@2.1.9(@types/node@25.9.1)(jsdom@24.1.3)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3)))':
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -10701,6 +10840,24 @@ snapshots:
       test-exclude: 7.0.2
       tinyrainbow: 1.2.0
       vitest: 2.1.9(@types/node@25.9.1)(jsdom@24.1.3)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3))
+    transitivePeerDependencies:
+      - supports-color
+
+  '@vitest/coverage-v8@2.1.9(vitest@2.1.9(@types/node@25.9.1)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3)))':
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@bcoe/v8-coverage': 0.2.3
+      debug: 4.4.3
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-lib-source-maps: 5.0.6
+      istanbul-reports: 3.2.0
+      magic-string: 0.30.21
+      magicast: 0.3.5
+      std-env: 3.10.0
+      test-exclude: 7.0.2
+      tinyrainbow: 1.2.0
+      vitest: 2.1.9(@types/node@25.9.1)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.1)(typescript@5.9.3))
     transitivePeerDependencies:
       - supports-color
 
@@ -11074,6 +11231,8 @@ snapshots:
     dependencies:
       '@fastify/error': 3.4.1
       fastq: 1.20.1
+
+  axe-core@4.11.4: {}
 
   axe-core@4.12.0: {}
 
@@ -12230,6 +12389,9 @@ snapshots:
 
   fs.realpath@1.0.0: {}
 
+  fsevents@2.3.2:
+    optional: true
+
   fsevents@2.3.3:
     optional: true
 
@@ -13286,6 +13448,14 @@ snapshots:
       confbox: 0.1.8
       mlly: 1.8.2
       pathe: 2.0.3
+
+  playwright-core@1.60.0: {}
+
+  playwright@1.60.0:
+    dependencies:
+      playwright-core: 1.60.0
+    optionalDependencies:
+      fsevents: 2.3.2
 
   polished@4.3.1:
     dependencies:

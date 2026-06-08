@@ -23,6 +23,7 @@
     "@portfolio/tsconfig": "workspace:*",
     "rimraf": "^6.0.0",
     "typescript": "^5.4.0",
+    "@vitest/coverage-v8": "^2.0.0",
     "vitest": "^2.0.0"
   }
 }
