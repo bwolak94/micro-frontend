@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint / Build / Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Audit for high-severity vulnerabilities
+        run: pnpm audit --audit-level high
+        continue-on-error: false
+
+      - name: Lint
+        run: pnpm turbo lint
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+      - name: Build
+        run: pnpm turbo build
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+      - name: Unit & integration tests
+        run: pnpm turbo test
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: |
+            apps/shell/coverage/lcov.info
+            apps/mfe-auth/coverage/lcov.info
+            apps/mfe-dashboard/coverage/lcov.info
+            apps/mfe-products/coverage/lcov.info
+            apps/bff/coverage/lcov.info
+            packages/event-bus/coverage/lcov.info
+            packages/logger/coverage/lcov.info
+            packages/api-client/coverage/lcov.info
+            packages/ui/coverage/lcov.info
+          fail_ci_if_error: false
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @portfolio/shell exec playwright install --with-deps chromium
+
+      - name: Start full stack for E2E
+        run: docker compose up --build -d
+        env:
+          JWT_SECRET: ci-jwt-secret-min-32-characters-ok
+
+      - name: Wait for stack to be healthy
+        run: |
+          echo "Waiting for nginx + bff to be ready..."
+          timeout 120 bash -c 'until curl -sf http://localhost/api/health > /dev/null 2>&1; do
+            echo "  not ready yet, sleeping 3s..."
+            sleep 3
+          done'
+          echo "Stack is healthy."
+
+      - name: Run E2E tests
+        run: pnpm --filter @portfolio/shell test:e2e
+        env:
+          E2E_BASE_URL: http://localhost
+
+      - name: Tear down stack
+        if: always()
+        run: docker compose down -v
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/shell/playwright-report/
+          retention-days: 7

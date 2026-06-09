@@ -1,0 +1,89 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "schedule": ["after 9am and before 5pm on weekdays"],
+  "timezone": "Europe/Warsaw",
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Automerge patch and minor dev dependency updates",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Group all Vite plugin updates together",
+      "matchPackagePatterns": ["^@vitejs/", "^vite"],
+      "groupName": "Vite plugins",
+      "groupSlug": "vite"
+    },
+    {
+      "description": "Group all Vitest packages together",
+      "matchPackagePatterns": ["^vitest", "^@vitest/"],
+      "groupName": "Vitest",
+      "groupSlug": "vitest"
+    },
+    {
+      "description": "Group all Playwright packages together",
+      "matchPackagePatterns": ["^@playwright/", "^playwright", "^@axe-core/"],
+      "groupName": "Playwright",
+      "groupSlug": "playwright"
+    },
+    {
+      "description": "Group all Testing Library packages together",
+      "matchPackagePatterns": ["^@testing-library/"],
+      "groupName": "Testing Library",
+      "groupSlug": "testing-library"
+    },
+    {
+      "description": "Group all ESLint packages together",
+      "matchPackagePatterns": [
+        "^eslint",
+        "^@typescript-eslint/",
+        "^eslint-plugin-"
+      ],
+      "groupName": "ESLint",
+      "groupSlug": "eslint"
+    },
+    {
+      "description": "Group all Storybook packages together",
+      "matchPackagePatterns": ["^@storybook/", "^storybook"],
+      "groupName": "Storybook",
+      "groupSlug": "storybook"
+    },
+    {
+      "description": "Group all Fastify packages together",
+      "matchPackagePatterns": ["^fastify", "^@fastify/"],
+      "groupName": "Fastify",
+      "groupSlug": "fastify"
+    },
+    {
+      "description": "Group all React packages together",
+      "matchPackagePatterns": ["^react", "^@types/react"],
+      "groupName": "React",
+      "groupSlug": "react"
+    },
+    {
+      "description": "Group TanStack packages together",
+      "matchPackagePatterns": ["^@tanstack/"],
+      "groupName": "TanStack",
+      "groupSlug": "tanstack"
+    },
+    {
+      "description": "Pin Docker image digests for reproducible builds",
+      "matchDatasources": ["docker"],
+      "pinDigests": true
+    },
+    {
+      "description": "Do not automerge major updates — require manual review",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ],
+  "ignoreDeps": [],
+  "prCreation": "immediate",
+  "prHourlyLimit": 5,
+  "prConcurrentLimit": 10
+}

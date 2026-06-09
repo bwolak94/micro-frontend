@@ -2,7 +2,10 @@
 
 > An e-commerce admin panel built with microfrontend architecture — demonstrating Senior UI Lead / Senior Full-Stack engineering competencies.
 
-[![CI](https://github.com/bartoszwolak/mfe-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/bartoszwolak/mfe-portfolio/actions/workflows/ci.yml)
+[![CI](https://github.com/bwolak94/mfe-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/bwolak94/mfe-portfolio/actions/workflows/ci.yml)
+[![Codecov](https://codecov.io/gh/bwolak94/mfe-portfolio/graph/badge.svg)](https://codecov.io/gh/bwolak94/mfe-portfolio)
+[![Storybook](https://img.shields.io/badge/Storybook-deployed-FF4785?logo=storybook&logoColor=white)](https://bwolak94.github.io/mfe-portfolio/)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io-2496ED?logo=docker&logoColor=white)](https://github.com/bwolak94/mfe-portfolio/pkgs/container/mfe-portfolio-shell)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4+-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-20%20LTS-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![pnpm](https://img.shields.io/badge/pnpm-9+-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
@@ -146,6 +149,36 @@ This is a portfolio project. Here's what a production deployment would add:
 - **Feature flags** (Unleash) — canary-deploy individual MFEs independently
 - **Sentry + DataDog APM** — real-time error tracking and frontend performance
 - **Synthetic monitoring** (Checkly) — proactive alerting on critical user journeys
+
+---
+
+## CI/CD
+
+Three GitHub Actions workflows run automatically:
+
+| Workflow                        | Trigger            | What it does                                       |
+| ------------------------------- | ------------------ | -------------------------------------------------- |
+| **CI** (`ci.yml`)               | Push / PR → `main` | Lint → Build → Unit tests → Coverage → E2E         |
+| **Docker** (`docker.yml`)       | Push → `main`      | Build & push 5 images to GHCR (`latest` + SHA tag) |
+| **Storybook** (`storybook.yml`) | Push → `main`      | Deploy `@portfolio/ui` Storybook to GitHub Pages   |
+
+### Required secrets
+
+| Secret          | Purpose                               |
+| --------------- | ------------------------------------- |
+| `TURBO_TOKEN`   | Turborepo remote cache authentication |
+| `TURBO_TEAM`    | Turborepo remote cache team slug      |
+| `CODECOV_TOKEN` | Upload coverage reports to Codecov    |
+
+`GITHUB_TOKEN` is injected automatically by GitHub Actions for GHCR login.
+
+### Branch protection (recommended)
+
+Require the **CI** workflow to pass before merging to `main`:
+
+1. Settings → Branches → Add rule → `main`
+2. Check **Require status checks to pass** → select `Lint / Build / Test`
+3. Check **Require branches to be up to date**
 
 ---
 
