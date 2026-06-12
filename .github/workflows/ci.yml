@@ -78,7 +78,7 @@ jobs:
         run: pnpm --filter @portfolio/shell exec playwright install --with-deps chromium
 
       - name: Start full stack for E2E
-        run: docker compose up --build --parallel -d
+        run: COMPOSE_PARALLEL_LIMIT=5 docker compose up --build -d
         env:
           JWT_SECRET: ci-jwt-secret-min-32-characters-ok
 
