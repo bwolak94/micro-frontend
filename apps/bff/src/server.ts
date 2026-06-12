@@ -63,8 +63,8 @@ async function build(): Promise<ReturnType<typeof Fastify>> {
   const productsService = createProductsService(productsRepo);
   const dashboardService = createDashboardService(dashboardRepo);
 
-  // Health endpoint
-  app.get('/health', async (_req, reply) => {
+  // Health endpoint — reachable via nginx at /api/health
+  app.get('/api/health', async (_req, reply) => {
     return reply.send({ status: 'ok', uptime: process.uptime(), version: '1.0.0' });
   });
 

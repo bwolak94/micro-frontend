@@ -78,14 +78,14 @@ jobs:
         run: pnpm --filter @portfolio/shell exec playwright install --with-deps chromium
 
       - name: Start full stack for E2E
-        run: docker compose up --build -d
+        run: docker compose up --build --parallel -d
         env:
           JWT_SECRET: ci-jwt-secret-min-32-characters-ok
 
       - name: Wait for stack to be healthy
         run: |
           echo "Waiting for nginx + bff to be ready..."
-          timeout 120 bash -c 'until curl -sf http://localhost/api/health > /dev/null 2>&1; do
+          timeout 300 bash -c 'until curl -sf http://localhost/api/health > /dev/null 2>&1; do
             echo "  not ready yet, sleeping 3s..."
             sleep 3
           done'
