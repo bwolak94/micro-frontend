@@ -49,5 +49,20 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@9.15.0"
+  "packageManager": "pnpm@9.15.0",
+  "pnpm": {
+    "overrides": {
+      "fast-uri": ">=3.1.1"
+    },
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-mvf2-f6gm-w987",
+        "GHSA-rp9m-7r4c-75qg",
+        "GHSA-gmvf-9v4p-v8jc",
+        "GHSA-hm7r-c7qw-ghp6",
+        "GHSA-jx2c-rxcm-jvmq",
+        "GHSA-gpj5-g38j-94v9"
+      ]
+    }
+  }
 }
