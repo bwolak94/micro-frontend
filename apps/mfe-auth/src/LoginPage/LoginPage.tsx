@@ -6,7 +6,7 @@ import type { LoginPageProps } from '@portfolio/shared-types';
 import type { FC } from 'react';
 
 const LoginPage: FC<LoginPageProps> = ({ onLoginSuccess }) => (
-  <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
+  <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
     <div className="w-full max-w-md">
       <div className="rounded-lg bg-white p-8 shadow-md dark:bg-gray-800">
         <div className="mb-6 text-center">
@@ -27,7 +27,7 @@ const LoginPage: FC<LoginPageProps> = ({ onLoginSuccess }) => (
         </p>
       </div>
     </div>
-  </div>
+  </main>
 );
 
 export default LoginPage;

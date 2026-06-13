@@ -4,6 +4,7 @@ export default defineConfig({
   entry: {
     server: 'src/server.ts',
     migrate: 'src/migrate.ts',
+    seed: 'src/domain/seed.ts',
   },
   format: ['esm'],
   target: 'node20',
