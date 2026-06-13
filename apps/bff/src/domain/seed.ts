@@ -12,7 +12,7 @@ async function seed(): Promise<void> {
   console.log('🌱 Seeding database...');
 
   // Create admin user
-  const adminHash = await bcrypt.hash('Admin123!', 10);
+  const adminHash = await bcrypt.hash('password123', 10);
   const [admin] = await db
     .insert(users)
     .values({
@@ -25,7 +25,7 @@ async function seed(): Promise<void> {
     .returning();
 
   // Create viewer user
-  const viewerHash = await bcrypt.hash('Viewer123!', 10);
+  const viewerHash = await bcrypt.hash('password123', 10);
   const [viewer] = await db
     .insert(users)
     .values({
